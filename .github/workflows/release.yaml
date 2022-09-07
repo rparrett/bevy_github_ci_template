@@ -3,15 +3,13 @@ name: Release
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 env:
   # update with the name of the main binary
   binary: bevy_github_ci_template
 
-
 jobs:
-
   # Build for wasm
   release-wasm:
     runs-on: ubuntu-latest
@@ -115,11 +113,10 @@ jobs:
           mkdir windows
           cp target/x86_64-pc-windows-msvc/release/${{ env.binary }}.exe windows/
           cp -r assets windows/
+
       - name: Package as a zip
-        uses: vimtor/action-zip@v1
-        with:
-          files: windows
-          dest: ${{ env.binary }}.zip
+        run: |
+          Compress-Archive -Path windows/* -DestinationPath ${{ env.binary }}.zip
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
